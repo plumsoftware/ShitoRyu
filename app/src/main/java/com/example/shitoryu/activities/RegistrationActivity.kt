@@ -1,12 +1,14 @@
-package com.example.shitoryu
+package com.example.shitoryu.activities
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.shitoryu.R
 
 class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,9 @@ class RegistrationActivity : AppCompatActivity() {
                 editor.putString("password", password)
                 editor.putString("email", email)
                 editor.apply()
+
+                startActivity(Intent(this, UserInfoActivity::class.java))
+                finish()
             } else {
                 Toast.makeText(this, "Заполните все данные профиля!", Toast.LENGTH_LONG).show()
             }

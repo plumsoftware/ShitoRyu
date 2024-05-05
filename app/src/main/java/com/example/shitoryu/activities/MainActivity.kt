@@ -1,13 +1,13 @@
-package com.example.shitoryu
+package com.example.shitoryu.activities
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.shitoryu.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
                 val p = sp.getString("password", "")
 
                 if (p.equals(password) && l.equals(login)) {
-                    // YES
+                    startActivity(Intent(this, TimetableActivity::class.java))
+                    finish()
                 } else {
-                    // NOT YES
-                    Toast.makeText(this, "неверный логин или пароль", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_LONG).show()
                 }
             }
         }
