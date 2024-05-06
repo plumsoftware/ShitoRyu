@@ -1,12 +1,14 @@
 package com.example.shitoryu.database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.shitoryu.model.EventData
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "events.db"
@@ -41,6 +43,43 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_EVENTS")
         onCreate(db)
+    }
+
+    @SuppressLint("Range")
+    fun getEvents(): List<EventData> {
+        val eventList = mutableListOf<EventData>()
+        val query = "SELECT * FROM $TABLE_EVENTS"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID))
+                val dayOfMonth = cursor.getInt(cursor.getColumnIndex(COLUMN_DAY_OF_MONTH))
+                val month = cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH))
+                val year = cursor.getInt(cursor.getColumnIndex(COLUMN_YEAR))
+                val hour = cursor.getInt(cursor.getColumnIndex(COLUMN_HOUR))
+                val minute = cursor.getInt(cursor.getColumnIndex(COLUMN_MINUTE))
+                val isCompetition = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_COMPETITION))
+                val place = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE))
+                val group = cursor.getString(cursor.getColumnIndex(COLUMN_GROUP))
+
+                val eventData = EventData(
+                    dayOfMonth = dayOfMonth,
+                    month = month,
+                    year = year,
+                    hour = hour,
+                    minute = minute,
+                    isCompetition = isCompetition,
+                    place = place,
+                    group = group
+                )
+                eventList.add(eventData)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+
+        return eventList
     }
 
     fun addEvent(data: EventData) {
