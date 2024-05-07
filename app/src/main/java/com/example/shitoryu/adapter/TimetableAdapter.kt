@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shitoryu.R
@@ -26,11 +25,13 @@ class TimetableAdapter(private val list: List<EventData>) :
     @SuppressLint("CutPasteId")
     class TimetableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvEventDate: TextView
-        val radioButton: RadioButton
+        val tvTitle: TextView
+        val checkBox: CheckBox
 
         init {
-            radioButton = itemView.findViewById<RadioButton>(R.id.radioButton)
+            checkBox = itemView.findViewById<CheckBox>(R.id.checkBox)
             tvEventDate = itemView.findViewById<TextView>(R.id.tvEventDate)
+            tvTitle = itemView.findViewById<TextView>(R.id.textViewTitle)
         }
 
     }
@@ -50,20 +51,53 @@ class TimetableAdapter(private val list: List<EventData>) :
     ) {
         val item = list[position]
 
-        if (item.isCompetition != -1) {
-            holder.tvEventDate.text =
-                "${item.dayOfMonth}.${item.month}.${item.year} - в ${item.hour}:${item.minute}"
-
-            holder.radioButton.isChecked = selectedPosition == position
-            holder.radioButton.setOnClickListener {
-                notifyDataSetChanged()
-                if (listener != null) {
-                    listener!!.onItemClicked(position)
-                }
-            }
+        if (position == 0) {
+            holder.tvTitle.visibility = View.VISIBLE
+            holder.tvTitle.text = "Расписание занятий"
         } else {
-            holder.radioButton.visibility = View.GONE
-            holder.tvEventDate.visibility = View.GONE
+            holder.tvTitle.visibility = View.GONE
+        }
+
+        if (position == 5) {
+            holder.tvTitle.visibility = View.VISIBLE
+            holder.tvTitle.text = "Расписание соревнований"
+        } else {
+            holder.tvTitle.visibility = View.GONE
+        }
+
+        //next element
+//        val nextItem = if ((position + 1) != list.size) {
+//            list[position + 1]
+//        } else {
+//            null
+//        }
+//
+//        if (nextItem != null) {
+//            if (position == 0) {
+//                holder.tvTitle.text = "Расписание занятий"
+//            } else {
+//                holder.tvTitle.visibility = View.GONE
+//
+//                if (item.isCompetition == nextItem.isCompetition){
+//                    holder.tvTitle.visibility = View.GONE
+//                } else {
+//                    holder.tvTitle.visibility = View.VISIBLE
+//                    holder.tvTitle.text = "Расписание соревнований"
+//                }
+//            }
+//        } else {
+//            holder.tvTitle.visibility = View.GONE
+//        }
+
+        holder.tvEventDate.text =
+            "${item.dayOfMonth}.${item.month}.${item.year} - в ${item.hour}:${item.minute}"
+
+        holder.checkBox.isChecked = selectedPosition == position
+        holder.checkBox.setOnClickListener {
+            notifyDataSetChanged()
+            if (listener != null) {
+                listener!!.onItemClicked(position)
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ class TimetableActivity : AppCompatActivity() {
         val buttonSignUp = findViewById<Button>(R.id.buttonSignUp)
         val recyclerViewCalendar = findViewById<RecyclerView>(R.id.recyclerViewCalendar)
         val recyclerViewTimeTable = findViewById<RecyclerView>(R.id.recyclerViewTimeTable)
-        val recyclerViewTimeTable1 = findViewById<RecyclerView>(R.id.recyclerViewTimeTable1)
+//        val recyclerViewTimeTable1 = findViewById<RecyclerView>(R.id.recyclerViewTimeTable1)
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
 
         var selectedEvent: EventData? = null
@@ -54,18 +54,26 @@ class TimetableActivity : AppCompatActivity() {
         )
         username.text = fullName
 
-        val timetableAdapter = TimetableAdapter(list.sortedBy { it.isCompetition == 0 })
+        val sortedList: MutableList<EventData> = mutableListOf()
+        list.filter { it.isCompetition != -1 && it.isCompetition == 0 }.forEach {
+            sortedList.add(it)
+        }
+        list.filter { it.isCompetition != -1 && it.isCompetition == 1}.forEach {
+            sortedList.add(it)
+        }
+
+        val timetableAdapter = TimetableAdapter(sortedList.toList())
         timetableAdapter.setOnItemClickedListener(listener)
         recyclerViewTimeTable.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerViewTimeTable.adapter = timetableAdapter
 
 
-        val timetableAdapter1 = TimetableAdapter(list.sortedBy { it.isCompetition == 1 })
-        timetableAdapter1.setOnItemClickedListener(listener)
-        recyclerViewTimeTable1.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recyclerViewTimeTable1.adapter = timetableAdapter1
+//        val timetableAdapter1 = TimetableAdapter(list.sortedBy { it.isCompetition == 1 })
+//        timetableAdapter1.setOnItemClickedListener(listener)
+//        recyclerViewTimeTable1.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        recyclerViewTimeTable1.adapter = timetableAdapter1
 
         buttonSignUp.setOnClickListener {
             val intent = Intent(

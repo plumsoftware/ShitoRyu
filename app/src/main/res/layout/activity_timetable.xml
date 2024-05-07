@@ -203,35 +203,13 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <TextView
-                        android:id="@+id/textView7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20sp"
-                        android:text="Расписание занятий" />
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewTimeTable"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center"
-                        android:text="Расписание соревнований"
-                        android:textColor="#FFFFFF"
-                        android:textSize="20sp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewTimeTable1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
