@@ -32,18 +32,10 @@ class TimetableActivity : AppCompatActivity() {
 //        val recyclerViewTimeTable1 = findViewById<RecyclerView>(R.id.recyclerViewTimeTable1)
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
 
-        var selectedEvent: EventData? = null
+        var selectedEvent: EventData = EventData()
 
         val dbHelper = DatabaseHelper(this)
         val list = dbHelper.getEvents()
-        val listener = object : OnItemClickedListener {
-            override fun onItemClicked(position: Int) {
-                if (selectedPosition != position) {
-                    selectedPosition = position
-                }
-                selectedEvent = list[position]
-            }
-        }
 
         val calendarAdapter = CalendarAdapter(list)
         recyclerViewCalendar.adapter = calendarAdapter
@@ -60,6 +52,14 @@ class TimetableActivity : AppCompatActivity() {
         }
         list.filter { it.isCompetition != -1 && it.isCompetition == 1}.forEach {
             sortedList.add(it)
+        }
+        val listener = object : OnItemClickedListener {
+            override fun onItemClicked(position: Int) {
+                if (selectedPosition != position) {
+                    selectedPosition = position
+                }
+                selectedEvent = sortedList[position]
+            }
         }
 
         val timetableAdapter = TimetableAdapter(sortedList.toList())
