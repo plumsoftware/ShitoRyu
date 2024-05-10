@@ -5,4 +5,5 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
     android:gravity="center"
-    android:textColor="#000"/>
+    android:background="@color/primary"
+    android:textColor="#FFF"/>

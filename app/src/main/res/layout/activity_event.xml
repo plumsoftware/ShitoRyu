@@ -100,11 +100,13 @@
 
                     <Spinner
                         android:id="@+id/spinnerPlace"
+                        style="@style/spinnerStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:textColor="#DDD6CE" />
+                        android:spinnerMode="dropdown"
+                        android:textColor="#FFF" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,7 @@ import com.example.shitoryu.model.OnItemClickedListener
 class TimetableActivity : AppCompatActivity() {
 
     companion object {
-        var selectedPosition = -1
+        var selectedEvent: EventData = EventData()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +30,7 @@ class TimetableActivity : AppCompatActivity() {
         val buttonSignUp = findViewById<Button>(R.id.buttonSignUp)
         val recyclerViewCalendar = findViewById<RecyclerView>(R.id.recyclerViewCalendar)
         val recyclerViewTimeTable = findViewById<RecyclerView>(R.id.recyclerViewTimeTable)
-//        val recyclerViewTimeTable1 = findViewById<RecyclerView>(R.id.recyclerViewTimeTable1)
         val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
-
-        var selectedEvent: EventData = EventData()
 
         val dbHelper = DatabaseHelper(this)
         val list = dbHelper.getEvents()
@@ -53,37 +51,30 @@ class TimetableActivity : AppCompatActivity() {
         list.filter { it.isCompetition != -1 && it.isCompetition == 1}.forEach {
             sortedList.add(it)
         }
-        val listener = object : OnItemClickedListener {
-            override fun onItemClicked(position: Int) {
-                if (selectedPosition != position) {
-                    selectedPosition = position
-                }
-                selectedEvent = sortedList[position]
-            }
-        }
+//        val listener = object : OnItemClickedListener {
+//            override fun onItemClicked(position: Int) {
+//                selectedEvent = sortedList[position]
+//            }
+//        }
 
         val timetableAdapter = TimetableAdapter(sortedList.toList())
-        timetableAdapter.setOnItemClickedListener(listener)
+//        timetableAdapter.setOnItemClickedListener(listener)
         recyclerViewTimeTable.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerViewTimeTable.adapter = timetableAdapter
 
-
-//        val timetableAdapter1 = TimetableAdapter(list.sortedBy { it.isCompetition == 1 })
-//        timetableAdapter1.setOnItemClickedListener(listener)
-//        recyclerViewTimeTable1.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        recyclerViewTimeTable1.adapter = timetableAdapter1
-
         buttonSignUp.setOnClickListener {
-            val intent = Intent(
-                this,
-                EventActivity::class.java
-            ).apply {
-                putExtra("event", selectedEvent)
+            if (selectedEvent == EventData()) {
+                Toast.makeText(this, "Выберите хотя бы одно занятие", Toast.LENGTH_LONG).show()
+            } else {
+                val intent = Intent(
+                    this,
+                    EventActivity::class.java
+                ).apply {
+                    putExtra("event", selectedEvent)
+                }
+                startActivity(intent)
             }
-            finish()
-            startActivity(intent)
         }
     }
 }

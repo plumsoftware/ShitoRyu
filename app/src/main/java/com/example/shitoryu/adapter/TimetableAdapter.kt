@@ -8,7 +8,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shitoryu.R
-import com.example.shitoryu.activities.TimetableActivity.Companion.selectedPosition
+import com.example.shitoryu.activities.TimetableActivity
 import com.example.shitoryu.model.EventData
 import com.example.shitoryu.model.OnItemClickedListener
 
@@ -18,9 +18,9 @@ class TimetableAdapter(private val list: List<EventData>) :
 
     private var listener: OnItemClickedListener? = null
 
-    fun setOnItemClickedListener(listener: OnItemClickedListener?) {
-        this.listener = listener
-    }
+//    fun setOnItemClickedListener(listener: OnItemClickedListener?) {
+//        this.listener = listener
+//    }
 
     @SuppressLint("CutPasteId")
     class TimetableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -92,12 +92,13 @@ class TimetableAdapter(private val list: List<EventData>) :
         holder.tvEventDate.text =
             "${item.dayOfMonth}.${item.month}.${item.year} - в ${item.hour}:${item.minute}"
 
-        holder.checkBox.isChecked = selectedPosition == position
+//        holder.checkBox.isChecked = selectedPosition == position
         holder.checkBox.setOnClickListener {
-            notifyDataSetChanged()
-            if (listener != null) {
-                listener!!.onItemClicked(position)
-            }
+            TimetableActivity.selectedEvent = item
+//            notifyDataSetChanged()
+//            if (listener != null) {
+//                listener!!.onItemClicked(position)
+//            }
         }
     }
 }
